@@ -27,87 +27,63 @@ def extract_record(item):
     # Item
     atag = item.h2.a
 
-    attrib_pass = [["description", bool], ["image", bool], ["price", bool], ["rating", bool], ["review_count", bool],
-                   ["url", bool]]
-
     # Description
     try:
         description = atag.text.strip()
         print(description)
-        attrib_pass[0, 2] = True
     except AttributeError:
         description = 'no-description'
         print(description)
-        attrib_pass[0, 2] = False
         return
 
     # Product image
     try:
         image_parent = item.find('div', {'class': 'a-section aok-relative s-image-square-aspect'})
-        try:
-            image = image_parent.find('img')
-            image = image['src']
-            attrib_pass[1, 2] = True
-        except AttributeError:
-            image = ['src', "no-image"]
-            attrib_pass[1, 2] = False
-            return attrib_pass
+        image = image_parent.find('img')
+        image = image['src']
+        print(image)
     except AttributeError:
-        return
+        image_parent = ''
+        image = ''
+        print(image)
+        return image_parent, image
 
     # price
     try:
         price_parent = item.find('span', 'a-price')
         price = price_parent.find('span', 'a-offscreen').text
         print(price)
-        attrib_pass[2, 2] = True
     except AttributeError:
         price = 'no-price'
         print(price)
-        attrib_pass[2, 2] = False
         return
 
     # rating
     try:
         rating = item.i.text
         print(rating)
-        attrib_pass[3, 2] = True
     except AttributeError:
         rating = 'no-rating'
         print(rating)
-        attrib_pass[3, 2] = False
-        return attrib_pass
+        return
 
     # review count
     try:
         review_count = item.find('span', {'class': 'a-size-base', 'dir': 'auto'}).text
         print(review_count)
-        attrib_pass[4, 2] = True
     except AttributeError:
         review_count = 'no-review-count'
         print(review_count)
-        attrib_pass[4, 2] = False
-        return attrib_pass
+        return
 
     # url
     try:
         url = 'https://www.amazon.co.uk' + atag.get('href')
         print(url)
-        attrib_pass[5, 2] = True
     except AttributeError:
         url = 'no-url'
         print(url)
-        attrib_pass[5, 2] = False
         return
-
-    i = 0
-    x = 0
-    while x < attrib_pass.length:
-        print(attrib_pass[x, i])
-        while i <= x:
-            print(attrib_pass[x, i])
-            i = i + 1
-        x = x + 1
 
     print(description, image, rating, review_count, url)
     result = (description, image, price, rating, review_count, url)
