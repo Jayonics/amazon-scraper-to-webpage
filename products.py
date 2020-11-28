@@ -1,7 +1,6 @@
 #!/usr/bin/env python
 import argparse
 import csv
-#import numpy
 from bs4 import BeautifulSoup
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
@@ -34,19 +33,18 @@ def extract_record(item):
     except AttributeError:
         description = 'no-description'
         print(description)
-        return
+        return description
 
     # Product image
     try:
-        image_parent = item.find('div', {'class': 'a-section aok-relative s-image-square-aspect'})
-        image = image_parent.find('img')
-        image = image['src']
+        super_image_parent = item.find('div', {'class': 'a-section aok-relative s-image-square-aspect'})
+        image_parent = super_image_parent.find('img')
+        image = str(image_parent['src'])
         print(image)
     except AttributeError:
-        image_parent = ''
-        image = ''
-        print(image)
-        return image_parent, image
+        image = 'no-image'
+        image = str(None)
+        return image
 
     # price
     try:
@@ -56,7 +54,7 @@ def extract_record(item):
     except AttributeError:
         price = 'no-price'
         print(price)
-        return
+        return price
 
     # rating
     try:
@@ -65,7 +63,7 @@ def extract_record(item):
     except AttributeError:
         rating = 'no-rating'
         print(rating)
-        return
+        return rating
 
     # review count
     try:
@@ -74,7 +72,7 @@ def extract_record(item):
     except AttributeError:
         review_count = 'no-review-count'
         print(review_count)
-        return
+        return review_count
 
     # url
     try:
@@ -83,7 +81,7 @@ def extract_record(item):
     except AttributeError:
         url = 'no-url'
         print(url)
-        return
+        return url
 
     print(description, image, rating, review_count, url)
     result = (description, image, price, rating, review_count, url)
