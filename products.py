@@ -29,10 +29,8 @@ def extract_record(item):
     # Description
     try:
         description = atag.text.strip()
-        print(description)
     except AttributeError:
         description = 'no-description'
-        print(description)
         return description
 
     # Product image
@@ -40,7 +38,6 @@ def extract_record(item):
         super_image_parent = item.find('div', {'class': 'a-section aok-relative s-image-square-aspect'})
         image_parent = super_image_parent.find('img')
         image = str(image_parent['src'])
-        print(image)
     except AttributeError:
         image = 'no-image'
         image = str(None)
@@ -50,37 +47,29 @@ def extract_record(item):
     try:
         price_parent = item.find('span', 'a-price')
         price = price_parent.find('span', 'a-offscreen').text
-        print(price)
     except AttributeError:
         price = 'no-price'
-        print(price)
         return price
 
     # rating
     try:
         rating = item.i.text
-        print(rating)
     except AttributeError:
         rating = 'no-rating'
-        print(rating)
         return rating
 
     # review count
     try:
         review_count = item.find('span', {'class': 'a-size-base', 'dir': 'auto'}).text
-        print(review_count)
     except AttributeError:
         review_count = 'no-review-count'
-        print(review_count)
         return review_count
 
     # url
     try:
         url = 'https://www.amazon.co.uk' + atag.get('href')
-        print(url)
     except AttributeError:
         url = 'no-url'
-        print(url)
         return url
 
     print(description, image, rating, review_count, url)
